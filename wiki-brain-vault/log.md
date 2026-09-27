@@ -32,5 +32,8 @@ Touched: Build Plan, Screens, Theme and Colors, Shared Widgets
 ## [2026-09-27 15:15] session | Step 5 Leaderboard built and verified
 Touched: Build Plan, Screens, Database, Shared Widgets
 
+## [2026-09-27 16:05] session | Add tag-based GitHub release workflow
+Touched: index, Tech Stack, Releases
+
 ## [2026-09-27 15:00] session | Launch screen and launcher icon
 Touched: Launch Screen and Icon, Screens, Design Source, Build Plan, Simon Circle, index

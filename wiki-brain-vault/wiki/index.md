@@ -17,6 +17,7 @@
 
 ## Concepts / decisions
 - [[Tech Stack]] — Flutter + sqflite, and why there is no other state or storage library
+- [[Releases]] — changelog, tag publishing, and Android signing
 - [[CLAUDE.md Rules]] — the repo's hard rules, summarized
 
 ## Sources

@@ -21,4 +21,6 @@
 
 Any new dependency needs the user's approval ([[CLAUDE.md Rules]]).
 
+Release tags publish the Android APK. Branch pushes only validate. See [[Releases]].
+
 Links: [[Memory Game]], [[Database]]
