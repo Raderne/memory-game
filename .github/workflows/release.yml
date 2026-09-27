@@ -99,10 +99,15 @@ jobs:
           KEY_ALIAS: ${{ secrets.ANDROID_KEY_ALIAS }}
           KEY_PASSWORD: ${{ secrets.ANDROID_KEY_PASSWORD }}
         run: |
-          test -n "$KEYSTORE_BASE64" || {
-            echo "::error::ANDROID_KEYSTORE_BASE64 is missing."
+          missing=()
+          test -n "$KEYSTORE_BASE64" || missing+=("ANDROID_KEYSTORE_BASE64")
+          test -n "$STORE_PASSWORD" || missing+=("ANDROID_KEYSTORE_PASSWORD")
+          test -n "$KEY_ALIAS" || missing+=("ANDROID_KEY_ALIAS")
+          test -n "$KEY_PASSWORD" || missing+=("ANDROID_KEY_PASSWORD")
+          if [ "${#missing[@]}" -gt 0 ]; then
+            echo "::error::Missing signing secrets: ${missing[*]}"
             exit 1
-          }
+          fi
 
           echo "$KEYSTORE_BASE64" | base64 -d > android/app/release.keystore
           cat > android/key.properties <<EOF

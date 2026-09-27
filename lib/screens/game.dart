@@ -2,6 +2,7 @@ import 'dart:async';
 import 'dart:math' as math;
 
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 
 import '../db.dart';
 import '../game.dart';
@@ -184,7 +185,10 @@ class _GameScreenState extends State<GameScreen> {
                                 theme: widget.settings.colorTheme,
                                 activeTile: game.activeTile,
                                 pressedTile: game.pressedTile,
-                                onTileTap: game.tap,
+                                onTileTap: (tile) {
+                                  HapticFeedback.selectionClick();
+                                  game.tap(tile);
+                                },
                                 disabled: game.phase != GamePhase.input,
                                 center: Text(
                                   game.phase == GamePhase.gameover
@@ -209,24 +213,44 @@ class _GameScreenState extends State<GameScreen> {
                                 fontSize: 16,
                                 fontWeight: FontWeight.w600,
                               ),
-                              child: Text(game.msg),
-                            ),
-                            if (game.phase == GamePhase.input)
-                              Padding(
-                                padding: const EdgeInsets.only(top: 10),
-                                child: Wrap(
-                                  alignment: WrapAlignment.center,
-                                  spacing: 6,
-                                  runSpacing: 6,
-                                  children: [
-                                    for (var i = 0; i < game.seq.length; i++)
-                                      _ProgressDot(
-                                        done: i < game.inputIdx,
-                                        accent: accent,
-                                      ),
-                                  ],
-                                ),
+                              child: Text(
+                                // A blank line keeps the same height as a message,
+                                // so the board does not jump when the words appear.
+                                game.msg.isEmpty ? '\u00a0' : game.msg,
+                                maxLines: 1,
+                                softWrap: false,
+                                overflow: TextOverflow.fade,
+                                textAlign: TextAlign.center,
                               ),
+                            ),
+                            // Always reserved: showing the dots must not move the tiles.
+                            SizedBox(
+                              key: const Key('progress-dots'),
+                              height: 18,
+                              child: game.phase == GamePhase.input
+                                  ? Padding(
+                                      padding: const EdgeInsets.only(top: 10),
+                                      child: FittedBox(
+                                        fit: BoxFit.scaleDown,
+                                        child: Row(
+                                          mainAxisSize: MainAxisSize.min,
+                                          spacing: 6,
+                                          children: [
+                                            for (
+                                              var i = 0;
+                                              i < game.seq.length;
+                                              i++
+                                            )
+                                              _ProgressDot(
+                                                done: i < game.inputIdx,
+                                                accent: accent,
+                                              ),
+                                          ],
+                                        ),
+                                      ),
+                                    )
+                                  : null,
+                            ),
                           ],
                         ),
                       );

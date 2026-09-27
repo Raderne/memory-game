@@ -36,4 +36,7 @@ android/local.properties
 android/**/GeneratedPluginRegistrant.java
 android/key.properties
 **/android/**/*.jks
+*.jks
+*.keystore
+keystore_base64.txt
 android/app/.cxx/

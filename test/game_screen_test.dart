@@ -66,4 +66,39 @@ void main() {
     expect(find.text('GAME OVER'), findsNothing);
     await tester.pumpWidget(const SizedBox.shrink());
   });
+
+  testWidgets('progress dots do not move the board', (tester) async {
+    tester.view.physicalSize = const Size(360, 720);
+    tester.view.devicePixelRatio = 1;
+    addTearDown(() {
+      tester.view.resetPhysicalSize();
+      tester.view.resetDevicePixelRatio();
+    });
+
+    await tester.pumpWidget(
+      MaterialApp(
+        theme: appTheme,
+        home: GameScreen(
+          settings: const Settings(speed: Speed.fast),
+          loadBest: () async => 0,
+          saveScore:
+              ({
+                required score,
+                required round,
+                required tiles,
+                required speed,
+                required theme,
+              }) async {},
+        ),
+      ),
+    );
+
+    await tester.pump(const Duration(milliseconds: 600));
+    final before = tester.getTopLeft(find.byType(SimonCircle));
+
+    await tester.pump(const Duration(milliseconds: 400));
+    expect(find.text('Your turn!'), findsOneWidget);
+    expect(tester.getTopLeft(find.byType(SimonCircle)), before);
+    expect(tester.getSize(find.byKey(const Key('progress-dots'))).height, 18);
+  });
 }

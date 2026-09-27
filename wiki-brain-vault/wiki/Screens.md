@@ -28,8 +28,10 @@ Home ──Start──▶ Game ──(gameover, 1.2s, replace)──▶ Game Ove
   animated phase message, and progress dots. Driven by [[Game Engine]].
   - The circle is 85% of screen width capped at 280 (and constrained to the available width). Input is
     disabled outside the engine's input phase. The center shows the round or a danger-colored `✕`.
-  - Completed 8px progress dots use the current accent and 38%-alpha glow; dots wrap only if a very long
-    sequence cannot fit one row.
+  - Completed 8px progress dots use the current accent and 38%-alpha glow. The message line and an 18px
+    dot slot stay reserved for the whole game, so the circle does not shift when the words or dots
+    appear. A long sequence stays on one row and scales down.
+  - Each accepted tile tap plays a short selection haptic. The pressed tile still lights for 180 ms.
   - On game over, previous best is read before the score is inserted, exactly once. After 1200 ms the
     Game route is replaced by Game Over. Back before game over disposes the engine and saves nothing.
   - Message color animation becomes instantaneous when reduced motion is enabled. The layout was

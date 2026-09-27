@@ -7,6 +7,16 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [1.0.2] - 2026-09-27
+
+### Fixed
+
+- The tiles no longer shift when the progress dots appear.
+
+### Added
+
+- A short vibration when a tile is tapped.
+
 ## [1.0.1] - 2026-09-27
 
 First Android release of the Simon-style memory game.

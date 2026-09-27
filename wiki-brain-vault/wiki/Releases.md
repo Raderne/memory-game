@@ -19,7 +19,7 @@ These three values must match before a release:
 
 ## Signing
 
-Release builds use `android/key.properties` when that file exists. Local release builds keep the debug key when it does not. The release workflow writes the file from these GitHub secrets, then deletes it:
+Release builds use `android/key.properties` when that file exists. Local release builds keep the debug key when it does not. The release workflow writes the file from these GitHub secrets, then deletes it. All four must be set. The v1.0.1 run had only the keystore secret, so Gradle tried to sign with an empty alias and an empty password and reported `keystore password was incorrect`.
 
 - `ANDROID_KEYSTORE_BASE64`
 - `ANDROID_KEYSTORE_PASSWORD`

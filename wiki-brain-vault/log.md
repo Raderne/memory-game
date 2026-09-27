@@ -40,3 +40,12 @@ Touched: Launch Screen and Icon, Screens, Design Source, Build Plan, Simon Circl
 
 ## [2026-09-27 16:25] session | Release tags must be on develop
 Touched: Releases
+
+## [2026-09-27 16:53] session | Release signing secrets were empty
+Touched: Releases
+
+## [2026-09-27 21:45] session | Keep the game board still
+Touched: Screens
+
+## [2026-09-27 21:50] session | Bump version to 1.0.2
+Touched: none
