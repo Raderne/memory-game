@@ -9,8 +9,9 @@ and must meet the definition of done in [[CLAUDE.md Rules]].
 | 1 | `plan/01-home.md` | Home ([[Screens]]) | **done** 2026-09-27 |
 | 2 | `plan/02-gameplay.md` | [[Game Engine]] + Game screen | **done** 2026-09-27 |
 | 3 | `plan/03-game-over.md` | Game Over | **done** 2026-09-27 |
-| 4 | `plan/04-settings.md` | Settings | todo |
+| 4 | `plan/04-settings.md` | Settings | **done** 2026-09-27 |
 | 5 | `plan/05-leaderboard.md` | Leaderboard | todo |
+| — | (no plan file; design `launch.jsx`) | [[Launch Screen and Icon]] | **done** 2026-09-27 |
 
 Order rationale: the design's order. Gameplay comes early so the play → save → result loop works
 by step 3.
@@ -32,5 +33,10 @@ by step 3.
   score, a tie, a zero score, Play Again, Home, Android back, the delayed fade, and reduced motion.
   Home reloads its best score when it is revealed again. Checked on the Pixel 10 emulator at normal and
   2× text scale; an existing best of 700 correctly hid the badge for a score of 35.
+- **4 (done):** `screens/settings.dart` saves tiles, speed, and theme immediately and previews them on a
+  disabled circle. Reset asks inline, then `clearScores()`. Home opens it; coming back reloads Best, so
+  a confirmed reset hides that line. `flutter analyze` clean, full suite passed. Checked on the Pixel 10
+  emulator at normal and 2× text: 8 / Fast / Ocean survived a cold restart, and reset hid Best. Accent
+  button labels now use `foregroundOn` (see [[Theme and Colors]]).
 
 Links: [[Memory Game]], [[Design Source]]

@@ -3,6 +3,8 @@ import 'package:flutter/material.dart';
 import 'db.dart';
 import 'screens/game.dart';
 import 'screens/home.dart';
+import 'screens/settings.dart';
+import 'screens/splash.dart';
 import 'theme.dart';
 
 Future<void> main() async {
@@ -21,6 +23,7 @@ class MemoryApp extends StatefulWidget {
 
 class _MemoryAppState extends State<MemoryApp> {
   late Settings settings = widget.initialSettings;
+  bool _splashDone = false;
 
   void _onSettingsChanged(Settings s) => setState(() => settings = s);
 
@@ -31,19 +34,38 @@ class _MemoryAppState extends State<MemoryApp> {
       debugShowCheckedModeBanner: false,
       theme: appTheme,
       navigatorObservers: [homeRouteObserver],
-      home: Builder(
-        builder: (context) => HomeScreen(
-          settings: settings,
-          onSettingsChanged: _onSettingsChanged,
-          onStartGame: () async {
-            await Navigator.of(context).push<void>(
-              MaterialPageRoute(builder: (_) => GameScreen(settings: settings)),
-            );
-          },
-          // Each callback is wired to its screen in that screen's build step.
-          onOpenSettings: () async {},
-          onOpenScores: () async {},
-        ),
+      // Swapping `home` keeps Home as the root route; the splash has already
+      // faded out, so Home fades in over the blank background.
+      home: AnimatedSwitcher(
+        duration: const Duration(milliseconds: 300),
+        child: _splashDone ? _home() : SplashScreen(onDone: _onSplashDone),
+      ),
+    );
+  }
+
+  void _onSplashDone() => setState(() => _splashDone = true);
+
+  Widget _home() {
+    return Builder(
+      builder: (context) => HomeScreen(
+        settings: settings,
+        onSettingsChanged: _onSettingsChanged,
+        onStartGame: () async {
+          await Navigator.of(context).push<void>(
+            MaterialPageRoute(builder: (_) => GameScreen(settings: settings)),
+          );
+        },
+        onOpenSettings: () async {
+          await Navigator.of(context).push<void>(
+            MaterialPageRoute(
+              builder: (_) => SettingsScreen(
+                settings: settings,
+                onSettingsChanged: _onSettingsChanged,
+              ),
+            ),
+          );
+        },
+        onOpenScores: () async {},
       ),
     );
   }

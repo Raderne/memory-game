@@ -12,6 +12,7 @@
 - [[Simon Circle]] — the circular tile board widget (painter + hit test)
 - [[Shared Widgets]] — `Btn`, `TopBar`, `OptionRow`, `ChoiceChipX` in `widgets.dart`
 - [[Screens]] — the 5 screens and how they navigate
+- [[Launch Screen and Icon]] — animated splash, native launch colors, adaptive launcher icon
 - [[Theme and Colors]] — color tokens, 4 color themes, speeds
 
 ## Concepts / decisions

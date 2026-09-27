@@ -6,7 +6,7 @@ const surface = Color(0xFF111120);
 const card = Color(0xFF18182C);
 const cardBorder = Color(0xFF252540);
 const text = Color(0xFFE8E8F0);
-const textSec = Color(0xFF7E7E98);
+const textSec = Color(0xFF80809A);
 const textDim = Color(0xFF4A4A60);
 const success = Color(0xFF30D158);
 const danger = Color(0xFFFF453A);
@@ -103,6 +103,21 @@ class Settings {
         colorTheme: colorTheme ?? this.colorTheme,
       );
 }
+
+/// WCAG contrast ratio between two opaque colors.
+double contrastRatio(Color a, Color b) {
+  final first = a.computeLuminance();
+  final second = b.computeLuminance();
+  final lighter = first > second ? first : second;
+  final darker = first > second ? second : first;
+  return (lighter + 0.05) / (darker + 0.05);
+}
+
+/// The app text color that stays readable on [background].
+Color foregroundOn(Color background) =>
+    contrastRatio(background, bg) >= contrastRatio(background, text)
+    ? bg
+    : text;
 
 final appTheme = ThemeData(
   brightness: Brightness.dark,

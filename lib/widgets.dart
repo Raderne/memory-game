@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 
 import 'theme.dart';
 
-/// Full-width button. With [accent]: accent fill + white text + glow shadow.
+/// Full-width button. With [accent]: accent fill, readable text, and a glow.
 /// Without: card fill + 1px border. Disabled (null [onTap]) renders at 40%.
 class Btn extends StatelessWidget {
   final String label;
@@ -25,7 +25,7 @@ class Btn extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final radius = BorderRadius.circular(small ? 12 : 16);
-    final fg = accent == null ? text : Colors.white;
+    final fg = accent == null ? text : foregroundOn(accent!);
     return Opacity(
       opacity: onTap == null ? 0.4 : 1,
       child: DecoratedBox(
@@ -48,24 +48,32 @@ class Btn extends StatelessWidget {
           child: InkWell(
             borderRadius: radius,
             onTap: onTap,
-            child: Padding(
-              padding: small
-                  ? const EdgeInsets.symmetric(vertical: 10, horizontal: 20)
-                  : const EdgeInsets.symmetric(vertical: 15, horizontal: 28),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                spacing: 8,
-                children: [
-                  if (icon != null) Icon(icon, size: 18, color: fg),
-                  Text(
-                    label,
-                    style: TextStyle(
-                      color: fg,
-                      fontSize: small ? 14 : 16,
-                      fontWeight: FontWeight.w600,
+            child: ConstrainedBox(
+              constraints: const BoxConstraints(minHeight: 48),
+              child: Padding(
+                padding: small
+                    ? const EdgeInsets.symmetric(vertical: 10, horizontal: 20)
+                    : const EdgeInsets.symmetric(vertical: 15, horizontal: 28),
+                child: Center(
+                  child: FittedBox(
+                    fit: BoxFit.scaleDown,
+                    child: Row(
+                      mainAxisSize: MainAxisSize.min,
+                      spacing: 8,
+                      children: [
+                        if (icon != null) Icon(icon, size: 18, color: fg),
+                        Text(
+                          label,
+                          style: TextStyle(
+                            color: fg,
+                            fontSize: small ? 14 : 16,
+                            fontWeight: FontWeight.w600,
+                          ),
+                        ),
+                      ],
                     ),
                   ),
-                ],
+                ),
               ),
             ),
           ),
@@ -87,10 +95,11 @@ class TopBar extends StatelessWidget {
       child: Row(
         children: [
           IconButton(
+            tooltip: 'Back',
             onPressed: () => Navigator.of(context).pop(),
             icon: const Icon(Icons.arrow_back, size: 20, color: textSec),
             padding: const EdgeInsets.all(10),
-            constraints: const BoxConstraints(),
+            constraints: const BoxConstraints(minWidth: 48, minHeight: 48),
           ),
           Text(
             title,
@@ -162,29 +171,47 @@ class ChoiceChipX extends StatelessWidget {
   Widget build(BuildContext context) {
     final radius = BorderRadius.circular(10);
     return Expanded(
-      child: DecoratedBox(
-        decoration: BoxDecoration(
-          color: selected ? accent.withValues(alpha: 0x22 / 255) : bg,
-          borderRadius: radius,
-          border: Border.all(
-            color: selected ? accent : cardBorder,
-            width: 1.5,
-          ),
-        ),
-        child: Material(
-          type: MaterialType.transparency,
-          child: InkWell(
-            borderRadius: radius,
-            onTap: onTap,
-            child: Padding(
-              padding: const EdgeInsets.symmetric(vertical: 10),
-              child: Text(
-                label,
-                textAlign: TextAlign.center,
-                style: TextStyle(
-                  color: selected ? accent : textSec,
-                  fontSize: 14,
-                  fontWeight: FontWeight.w600,
+      child: Semantics(
+        button: true,
+        selected: selected,
+        label: label,
+        child: ExcludeSemantics(
+          child: ConstrainedBox(
+            constraints: const BoxConstraints(minHeight: 48),
+            child: DecoratedBox(
+              decoration: BoxDecoration(
+                color: selected ? accent.withValues(alpha: 0x22 / 255) : bg,
+                borderRadius: radius,
+                border: Border.all(
+                  color: selected ? accent : cardBorder,
+                  width: 1.5,
+                ),
+              ),
+              child: Material(
+                type: MaterialType.transparency,
+                child: InkWell(
+                  borderRadius: radius,
+                  onTap: onTap,
+                  child: Padding(
+                    padding: const EdgeInsets.symmetric(
+                      vertical: 10,
+                      horizontal: 4,
+                    ),
+                    child: Center(
+                      child: FittedBox(
+                        fit: BoxFit.scaleDown,
+                        child: Text(
+                          label,
+                          textAlign: TextAlign.center,
+                          style: TextStyle(
+                            color: selected ? accent : textSec,
+                            fontSize: 14,
+                            fontWeight: FontWeight.w600,
+                          ),
+                        ),
+                      ),
+                    ),
+                  ),
                 ),
               ),
             ),
@@ -193,6 +220,29 @@ class ChoiceChipX extends StatelessWidget {
       ),
     );
   }
+}
+
+/// An annular sector starting at [startDeg] (0° at 12 o'clock, clockwise)
+/// and sweeping [sweepDeg].
+Path sectorPath(
+  Offset c,
+  double outer,
+  double inner,
+  double startDeg,
+  double sweepDeg,
+) {
+  // Canvas angles start at 3 o'clock, hence the −90°.
+  final start = (startDeg - 90) * math.pi / 180;
+  final sweep = sweepDeg * math.pi / 180;
+  return Path()
+    ..arcTo(Rect.fromCircle(center: c, radius: outer), start, sweep, true)
+    ..arcTo(
+      Rect.fromCircle(center: c, radius: inner),
+      start + sweep,
+      -sweep,
+      false,
+    )
+    ..close();
 }
 
 /// The circular Simon board: `tileCount` annular sectors around a center disc.
@@ -320,18 +370,7 @@ class _CirclePainter extends CustomPainter {
   Path _sector(int i, Offset c, double outer, double inner) {
     final arc = 360 / tileCount;
     final gap = SimonCircle.gapDeg(tileCount);
-    // 0° at 12 o'clock, clockwise → canvas angle is (deg − 90).
-    final start = (i * arc + gap / 2 - 90) * math.pi / 180;
-    final sweep = (arc - gap) * math.pi / 180;
-    return Path()
-      ..arcTo(Rect.fromCircle(center: c, radius: outer), start, sweep, true)
-      ..arcTo(
-        Rect.fromCircle(center: c, radius: inner),
-        start + sweep,
-        -sweep,
-        false,
-      )
-      ..close();
+    return sectorPath(c, outer, inner, i * arc + gap / 2, arc - gap);
   }
 
   @override

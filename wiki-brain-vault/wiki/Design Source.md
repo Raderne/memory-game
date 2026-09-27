@@ -10,6 +10,7 @@ The visual and behavioural spec is a React/JSX prototype in claude.ai/design.
 | `memory-app.jsx` | theme tokens `T`, speeds, storage, shared UI, `useSimonGame` hook | yes, to `theme.dart`, `db.dart`, `widgets.dart` and `game.dart` |
 | `memory-screens.jsx` | the 5 screens + `MemoryApp` router | yes, to `screens/*` and `main.dart` |
 | `simon-circle.jsx` | SVG sector board + `COLOR_THEMES` | yes, to [[Simon Circle]] and [[Theme and Colors]] |
+| `launch.jsx` | launcher icon `IconGlyph` + animated `SplashScreen` | yes, see [[Launch Screen and Icon]] |
 | `Memory Game.html` | canvas page + fake Android `Phone` shell | **no** (presentation only) |
 | `design-canvas.jsx` | Figma-like pan/zoom canvas | **no** (presentation only) |
 | `android-frame.jsx` | not imported by the entry file | no |

@@ -1,15 +1,17 @@
 # Screens
 
-Five screens under `lib/screens/`. Home, Game, and Game Over are built; Settings and Leaderboard remain
-planned. Per-screen specs live in `plan/0N-*.md` ([[Build Plan]]).
+Five screens under `lib/screens/`, plus the splash. Home, Game, Game Over, and Settings are built;
+Leaderboard remains planned. Per-screen specs live in `plan/0N-*.md` ([[Build Plan]]).
 
 ```
+Splash ──(5s, fade, replaces as root)──▶ Home
 Home ──Start──▶ Game ──(gameover, 1.2s, replace)──▶ Game Over ──Play Again (replace)──▶ Game
  │  ◀──Back (no save)──┘                                 └──Home──▶ Home
  ├──Settings──▶ Settings ──Back──▶ Home
  └──Scores────▶ Leaderboard ──Back──▶ Home
 ```
 
+- **Splash** (`screens/splash.dart`): the animated launch screen, see [[Launch Screen and Icon]].
 - **Home** (`screens/home.dart`, built in step 1): a centered, idle-animated [[Simon Circle]], gradient
   "MEMORY" title, "Best: N" from [[Database]], and Start / Settings / Scores. It is now the start route.
   - The board lights tile `i % tileCount` every 1200 ms for 500 ms. Both timers are cancelled in
@@ -18,8 +20,8 @@ Home ──Start──▶ Game ──(gameover, 1.2s, replace)──▶ Game Ove
     SQLite. The score loads on entry and after any destination callback returns; zero is hidden.
   - Circle width is 70% of the screen capped at 220. The page uses `SafeArea`, 32px horizontal padding,
     48dp secondary touch targets, semantic button labels, and `Flexible` labels at large text scales.
-  - Navigation is exposed as `onStartGame`, `onOpenSettings`, and `onOpenScores` callbacks. Settings and
-    Scores remain no-ops until their build steps.
+  - Navigation is exposed as `onStartGame`, `onOpenSettings`, and `onOpenScores` callbacks. Scores stays
+    a no-op until Leaderboard. Settings pushes the Settings screen.
   - `homeRouteObserver` reloads the best score in `didPopNext`, so returning from Play Again still
     updates "Best".
 - **Game** (`screens/game.dart`, built in step 2): 48px Round/score header, interactive [[Simon Circle]],
@@ -39,8 +41,14 @@ Home ──Start──▶ Game ──(gameover, 1.2s, replace)──▶ Game Ove
   - The result fades and slides 20px over 500ms ease, starting 100ms after the route builds. Reduced
     motion shows it immediately. Android back uses the same action as Home.
   - Play Again replaces this route with a fresh Game using the current settings. Home pops back to Home.
-- **Settings**: Tiles 4/6/8, Speed, Color Theme ([[Theme and Colors]]) and a preview circle. Changes save
-  immediately. Reset All Scores uses an inline confirm, not a dialog.
+- **Settings** (`screens/settings.dart`, built in step 4): TopBar "Settings", then scrollable TILES
+  (4/6/8), SPEED (Relaxed/Normal/Fast), and COLOR THEME. Theme buttons are a 2-column wrap (1 column
+  when two 120px buttons will not fit), each with the first four lit dots and that theme's own accent
+  when selected. A 130px disabled [[Simon Circle]] (`activeTile: 0`) previews the current tiles and theme.
+  Every change calls `saveSetting` and `onSettingsChanged` immediately. Reset All Scores is pinned to the
+  bottom: an outlined danger button, then inline Cancel / Confirm. Confirm calls `clearScores()` and
+  stays on this screen. Home reloads Best when it is revealed, so the Best line disappears after a reset.
+  Controls are at least 48dp, labelled for the screen reader, and the page was checked at 2× text.
 - **Leaderboard**: top 10 with 🥇🥈🥉, round, time-ago, and an empty state.
 
 Settings are held in the root widget state and passed down (no state library, see [[Tech Stack]]).

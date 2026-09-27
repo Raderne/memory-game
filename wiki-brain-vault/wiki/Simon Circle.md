@@ -9,6 +9,8 @@ The circular board widget (`SimonCircle` in `lib/widgets.dart`, built in step 0)
   (`SimonCircle.gapDeg(n)`).
 - Sector `i` is an annular sector spanning `[i·arc + gap/2, (i+1)·arc − gap/2]`, 0° at 12 o'clock, clockwise.
   Canvas angle = `deg − 90°`.
+  The path comes from the top-level `sectorPath(c, outer, inner, startDeg, sweepDeg)`, which
+  [[Launch Screen and Icon]] also uses (splash board + launcher icon).
 - Center disc: radius `r−2`, fill `#0C0C14`, stroke `#1C1C28` at 1.5. The optional `center` widget is stacked on top.
 
 ## Lighting
