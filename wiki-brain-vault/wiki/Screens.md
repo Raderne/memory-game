@@ -18,4 +18,6 @@ Home ──Start──▶ Game ──(gameover, 1.2s, replace)──▶ Game Ove
 - **Leaderboard**: top 10 with 🥇🥈🥉, round, time-ago, and an empty state.
 
 Settings are held in the root widget state and passed down (no state library, see [[Tech Stack]]).
+Screens compose the [[Shared Widgets]] (`Btn`, `TopBar`, `OptionRow`, `ChoiceChipX`) and the [[Simon Circle]].
+Until step 1, `main.dart`'s start route is a temporary foundation preview, not Home ([[Build Plan]] § Step notes).
 Links: [[Memory Game]], [[Design Source]]

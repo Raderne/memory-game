@@ -10,6 +10,7 @@
 - [[Database]] — SQLite schema + `db.dart` API (scores and settings)
 - [[Game Engine]] — `SimonGame` state machine, timing, scoring
 - [[Simon Circle]] — the circular tile board widget (painter + hit test)
+- [[Shared Widgets]] — `Btn`, `TopBar`, `OptionRow`, `ChoiceChipX` in `widgets.dart`
 - [[Screens]] — the 5 screens and how they navigate
 - [[Theme and Colors]] — color tokens, 4 color themes, speeds
 
@@ -23,3 +24,5 @@
 
 ## Known gotchas
 - [[Game Engine]] § Gotchas — high-score check order, timer cleanup
+- [[Theme and Colors]] § Notes — `Color(0xFF000000 | x)` is not a valid const initializer
+- [[Shared Widgets]] § Decisions — Material already exports `Chip`, hence `ChoiceChipX`

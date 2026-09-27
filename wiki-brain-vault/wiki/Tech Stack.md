@@ -5,6 +5,10 @@
 - No state-management library: `setState` + one `ChangeNotifier` ([[Game Engine]]).
 - Navigation: `Navigator.push` / `pushReplacement`.
 - Material icons only.
+- Project: package `memory_app`, Android id `com.memory.memory_app`, label "Memory". Created with
+  `flutter create --org com.memory --platforms android --project-name memory_app .` (the repo folder
+  `Memory` is not a valid Dart package name, hence `--project-name`). Portrait is locked in
+  `AndroidManifest.xml` (`android:screenOrientation="portrait"`). The template's `cupertino_icons` was dropped.
 
 ## Why (decided 2026-09-27)
 - Flutter compiles to native ARM and paints via its own engine, with no JS bridge. That gives smooth
