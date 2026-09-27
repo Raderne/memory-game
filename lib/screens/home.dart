@@ -7,6 +7,8 @@ import '../db.dart';
 import '../theme.dart';
 import '../widgets.dart';
 
+final homeRouteObserver = RouteObserver<PageRoute<dynamic>>();
+
 class HomeScreen extends StatefulWidget {
   final Settings settings;
   final ValueChanged<Settings> onSettingsChanged;
@@ -29,13 +31,14 @@ class HomeScreen extends StatefulWidget {
   State<HomeScreen> createState() => _HomeScreenState();
 }
 
-class _HomeScreenState extends State<HomeScreen> {
+class _HomeScreenState extends State<HomeScreen> with RouteAware {
   Timer? _idleTimer;
   Timer? _offTimer;
   int _tile = 0;
   int? _activeTile;
   int _best = 0;
   bool? _reduceMotion;
+  PageRoute<dynamic>? _route;
 
   @override
   void initState() {
@@ -46,6 +49,12 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
+    final route = ModalRoute.of(context);
+    if (route is PageRoute<dynamic> && route != _route) {
+      homeRouteObserver.unsubscribe(this);
+      _route = route;
+      homeRouteObserver.subscribe(this, route);
+    }
     final reduceMotion = MediaQuery.disableAnimationsOf(context);
     if (_reduceMotion == reduceMotion) return;
     _reduceMotion = reduceMotion;
@@ -76,6 +85,11 @@ class _HomeScreenState extends State<HomeScreen> {
     if (mounted) setState(() => _best = value);
   }
 
+  @override
+  void didPopNext() {
+    _loadBest();
+  }
+
   void _lightNextTile() {
     if (!mounted) return;
     setState(() => _activeTile = _tile % widget.settings.tileCount);
@@ -94,6 +108,7 @@ class _HomeScreenState extends State<HomeScreen> {
 
   @override
   void dispose() {
+    homeRouteObserver.unsubscribe(this);
     _idleTimer?.cancel();
     _offTimer?.cancel();
     super.dispose();

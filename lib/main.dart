@@ -30,24 +30,14 @@ class _MemoryAppState extends State<MemoryApp> {
       title: 'Memory',
       debugShowCheckedModeBanner: false,
       theme: appTheme,
+      navigatorObservers: [homeRouteObserver],
       home: Builder(
         builder: (context) => HomeScreen(
           settings: settings,
           onSettingsChanged: _onSettingsChanged,
           onStartGame: () async {
             await Navigator.of(context).push<void>(
-              MaterialPageRoute(
-                builder: (_) => GameScreen(
-                  settings: settings,
-                  // Step 3 replaces this with the Game Over route.
-                  onGameOver:
-                      ({
-                        required score,
-                        required round,
-                        required previousBest,
-                      }) async {},
-                ),
-              ),
+              MaterialPageRoute(builder: (_) => GameScreen(settings: settings)),
             );
           },
           // Each callback is wired to its screen in that screen's build step.

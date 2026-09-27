@@ -37,12 +37,13 @@ result delay. The injected defaults (`loadBest`, `saveScore`) are the real datab
 keeps the widget test fast and verifies read-before-insert ordering. `_saved` prevents duplicate rows when
 the engine later clears `pressedTile`.
 
-The screen exposes `onGameOver({score, round, previousBest})`. Until step 3 builds Game Over,
-`main.dart` passes a no-op, so the final state remains visible and Back returns Home. Home → Game is
-already wired with `Navigator.push`. Back before game over disposes the engine and does not save.
+The screen replaces itself with Game Over after the save and the 1200 ms delay. It does not expose a
+result callback. Home → Game uses `Navigator.push`. Back before game over disposes the engine and does
+not save.
 
 Tests:
 - `test/game_test.dart`: round-1/round-2 scoring, wrong-tap lockout, showing-phase lockout.
-- `test/game_screen_test.dart`: previous best → one insert → one callback after 1200 ms.
+- `test/game_screen_test.dart`: previous best → one insert → Game Over after 1200 ms → Play Again
+  starts round 1.
 
 Links: [[Simon Circle]], [[Database]], [[Screens]], [[Theme and Colors]]

@@ -7,6 +7,7 @@ import '../db.dart';
 import '../game.dart';
 import '../theme.dart';
 import '../widgets.dart';
+import 'game_over.dart';
 
 typedef ScoreSaver =
     Future<void> Function({
@@ -17,25 +18,16 @@ typedef ScoreSaver =
       required ColorTheme theme,
     });
 
-typedef GameOverCallback =
-    Future<void> Function({
-      required int score,
-      required int round,
-      required int previousBest,
-    });
-
 class GameScreen extends StatefulWidget {
   final Settings settings;
   final Future<int> Function() loadBest;
   final ScoreSaver saveScore;
-  final GameOverCallback onGameOver;
 
   const GameScreen({
     super.key,
     required this.settings,
     this.loadBest = bestScore,
     this.saveScore = insertScore,
-    required this.onGameOver,
   });
 
   @override
@@ -82,10 +74,24 @@ class _GameScreenState extends State<GameScreen> {
   Future<void> _deliverResult(Future<int> saved) async {
     final previousBest = await saved;
     if (!mounted) return;
-    await widget.onGameOver(
-      score: game.score,
-      round: game.round,
-      previousBest: previousBest,
+    final settings = widget.settings;
+    Navigator.of(context).pushReplacement(
+      MaterialPageRoute<void>(
+        builder: (_) => GameOverScreen(
+          score: game.score,
+          round: game.round,
+          prevBest: previousBest,
+          settings: settings,
+          onPlayAgain: (routeContext) {
+            Navigator.of(routeContext).pushReplacement(
+              MaterialPageRoute<void>(
+                builder: (_) => GameScreen(settings: settings),
+              ),
+            );
+          },
+          onHome: (routeContext) => Navigator.of(routeContext).pop(),
+        ),
+      ),
     );
   }
 

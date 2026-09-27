@@ -113,4 +113,40 @@ void main() {
     expect(find.text('Best: 99'), findsOneWidget);
     await tester.pumpWidget(const SizedBox.shrink());
   });
+
+  testWidgets('best reloads when a later game returns home', (tester) async {
+    var best = 10;
+    await tester.pumpWidget(
+      MaterialApp(
+        theme: appTheme,
+        navigatorObservers: [homeRouteObserver],
+        builder: (context, child) => MediaQuery(
+          data: MediaQuery.of(context).copyWith(disableAnimations: true),
+          child: child!,
+        ),
+        home: HomeScreen(
+          settings: const Settings(),
+          onSettingsChanged: (_) {},
+          onStartGame: () async {},
+          onOpenSettings: () async {},
+          onOpenScores: () async {},
+          loadBest: () async => best,
+        ),
+      ),
+    );
+    await tester.pump();
+    expect(find.text('Best: 10'), findsOneWidget);
+
+    final context = tester.element(find.text('MEMORY'));
+    Navigator.of(
+      context,
+    ).push(MaterialPageRoute<void>(builder: (_) => const Text('cover')));
+    await tester.pumpAndSettle();
+    best = 80;
+    Navigator.of(context).pop();
+    await tester.pumpAndSettle();
+
+    expect(find.text('Best: 80'), findsOneWidget);
+    await tester.pumpWidget(const SizedBox.shrink());
+  });
 }

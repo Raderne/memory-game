@@ -8,7 +8,7 @@ and must meet the definition of done in [[CLAUDE.md Rules]].
 | 0 | `plan/00-foundation.md` | project, [[Theme and Colors]], [[Database]], [[Shared Widgets]], [[Simon Circle]] | **done** 2026-09-27 |
 | 1 | `plan/01-home.md` | Home ([[Screens]]) | **done** 2026-09-27 |
 | 2 | `plan/02-gameplay.md` | [[Game Engine]] + Game screen | **done** 2026-09-27 |
-| 3 | `plan/03-game-over.md` | Game Over | todo |
+| 3 | `plan/03-game-over.md` | Game Over | **done** 2026-09-27 |
 | 4 | `plan/04-settings.md` | Settings | todo |
 | 5 | `plan/05-leaderboard.md` | Leaderboard | todo |
 
@@ -27,7 +27,10 @@ by step 3.
   at normal and 2× text scale. Future-screen callbacks remain no-ops until their own build steps.
 - **2 (done):** `game.dart` implements the timed state machine and scoring; `screens/game.dart` is wired from
   Home and saves once at game over. Engine and screen tests cover scoring, input lockout, read-before-insert,
-  and the 1200 ms result callback. Checked on the Pixel 10 emulator at normal and 2× text scale. The result
-  callback remains a no-op until step 3 builds Game Over.
+  and the 1200 ms handoff. Checked on the Pixel 10 emulator at normal and 2× text scale.
+- **3 (done):** `screens/game_over.dart` replaces Game after the save. Tests cover a new record, a lower
+  score, a tie, a zero score, Play Again, Home, Android back, the delayed fade, and reduced motion.
+  Home reloads its best score when it is revealed again. Checked on the Pixel 10 emulator at normal and
+  2× text scale; an existing best of 700 correctly hid the badge for a score of 35.
 
 Links: [[Memory Game]], [[Design Source]]

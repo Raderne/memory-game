@@ -9,7 +9,6 @@ void main() {
     tester,
   ) async {
     final order = <String>[];
-    ({int score, int round, int previousBest})? result;
 
     await tester.pumpWidget(
       MaterialApp(
@@ -29,14 +28,6 @@ void main() {
                 required theme,
               }) async {
                 order.add('save');
-              },
-          onGameOver:
-              ({required score, required round, required previousBest}) async {
-                result = (
-                  score: score,
-                  round: round,
-                  previousBest: previousBest,
-                );
               },
         ),
       ),
@@ -64,8 +55,15 @@ void main() {
     await tester.pump(const Duration(milliseconds: 1200));
     await tester.pump();
 
-    expect(result, (score: 0, round: 1, previousBest: 70));
+    expect(find.text('GAME OVER'), findsOneWidget);
+    expect(find.text('70'), findsOneWidget);
+    expect(find.text('★ NEW HIGH SCORE'), findsNothing);
     expect(order, ['best', 'save']);
+
+    await tester.tap(find.text('Play Again'));
+    await tester.pumpAndSettle();
+    expect(find.text('Round 1'), findsOneWidget);
+    expect(find.text('GAME OVER'), findsNothing);
     await tester.pumpWidget(const SizedBox.shrink());
   });
 }
