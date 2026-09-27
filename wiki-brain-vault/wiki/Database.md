@@ -19,7 +19,8 @@ CREATE TABLE settings(key TEXT PRIMARY KEY, value TEXT NOT NULL);
   Call once in `main()` before `runApp`. `closeDb()` exists for tests.
 - `insertScore({score, round, tiles, speed: Speed, theme: ColorTheme})`: stores enum `.name`s.
 - `topScores([limit = 10])` → `List<Score>` ordered `score DESC, created_at DESC`.
-  `Score` has `score, round, tiles, speed, theme, createdAt` (typed back to the enums).
+  `Score` has `score, round, tiles, speed, theme, createdAt` (typed back to the enums) and a public
+  constructor. The query still builds rows through the private `Score._` factory.
 - `bestScore()` → `MAX(score)`, 0 when empty.
 - `clearScores()`.
 - `loadSettings()` → `Settings` ([[Theme and Colors]]), applying defaults 4 / normal / classic for missing or

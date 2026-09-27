@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'db.dart';
 import 'screens/game.dart';
 import 'screens/home.dart';
+import 'screens/leaderboard.dart';
 import 'screens/settings.dart';
 import 'screens/splash.dart';
 import 'theme.dart';
@@ -65,7 +66,13 @@ class _MemoryAppState extends State<MemoryApp> {
             ),
           );
         },
-        onOpenScores: () async {},
+        onOpenScores: () async {
+          await Navigator.of(context).push<void>(
+            MaterialPageRoute(
+              builder: (_) => LeaderboardScreen(accent: settings.accent),
+            ),
+          );
+        },
       ),
     );
   }

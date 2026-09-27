@@ -101,13 +101,19 @@ class TopBar extends StatelessWidget {
             padding: const EdgeInsets.all(10),
             constraints: const BoxConstraints(minWidth: 48, minHeight: 48),
           ),
-          Text(
-            title,
-            style: const TextStyle(
-              color: text,
-              fontSize: 17,
-              fontWeight: FontWeight.w600,
-              letterSpacing: 0.2,
+          Expanded(
+            child: FittedBox(
+              fit: BoxFit.scaleDown,
+              alignment: Alignment.centerLeft,
+              child: Text(
+                title,
+                style: const TextStyle(
+                  color: text,
+                  fontSize: 17,
+                  fontWeight: FontWeight.w600,
+                  letterSpacing: 0.2,
+                ),
+              ),
             ),
           ),
         ],

@@ -42,13 +42,23 @@ class Score {
   final ColorTheme theme;
   final DateTime createdAt;
 
-  Score._(Map<String, Object?> row)
-    : score = row['score'] as int,
-      round = row['round'] as int,
-      tiles = row['tiles'] as int,
-      speed = Speed.values.byName(row['speed'] as String),
-      theme = ColorTheme.values.byName(row['theme'] as String),
-      createdAt = DateTime.fromMillisecondsSinceEpoch(row['created_at'] as int);
+  Score({
+    required this.score,
+    required this.round,
+    required this.tiles,
+    required this.speed,
+    required this.theme,
+    required this.createdAt,
+  });
+
+  factory Score._(Map<String, Object?> row) => Score(
+    score: row['score'] as int,
+    round: row['round'] as int,
+    tiles: row['tiles'] as int,
+    speed: Speed.values.byName(row['speed'] as String),
+    theme: ColorTheme.values.byName(row['theme'] as String),
+    createdAt: DateTime.fromMillisecondsSinceEpoch(row['created_at'] as int),
+  );
 }
 
 Future<void> insertScore({
@@ -96,8 +106,7 @@ Future<Settings> loadSettings() async {
   );
 }
 
-Future<void> saveSetting(String key, String value) => _db.insert(
-  'settings',
-  {'key': key, 'value': value},
-  conflictAlgorithm: ConflictAlgorithm.replace,
-);
+Future<void> saveSetting(String key, String value) => _db.insert('settings', {
+  'key': key,
+  'value': value,
+}, conflictAlgorithm: ConflictAlgorithm.replace);

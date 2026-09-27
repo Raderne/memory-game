@@ -10,7 +10,7 @@ and must meet the definition of done in [[CLAUDE.md Rules]].
 | 2 | `plan/02-gameplay.md` | [[Game Engine]] + Game screen | **done** 2026-09-27 |
 | 3 | `plan/03-game-over.md` | Game Over | **done** 2026-09-27 |
 | 4 | `plan/04-settings.md` | Settings | **done** 2026-09-27 |
-| 5 | `plan/05-leaderboard.md` | Leaderboard | todo |
+| 5 | `plan/05-leaderboard.md` | Leaderboard | **done** 2026-09-27 |
 | — | (no plan file; design `launch.jsx`) | [[Launch Screen and Icon]] | **done** 2026-09-27 |
 
 Order rationale: the design's order. Gameplay comes early so the play → save → result loop works
@@ -38,5 +38,11 @@ by step 3.
   a confirmed reset hides that line. `flutter analyze` clean, full suite passed. Checked on the Pixel 10
   emulator at normal and 2× text: 8 / Fast / Ocean survived a cold restart, and reset hid Best. Accent
   button labels now use `foregroundOn` (see [[Theme and Colors]]).
+- **5 (done):** `screens/leaderboard.dart` lists `topScores(10)`. Empty state is the trophy and the two
+  lines from the plan. Rows keep the query order; ranks 1–3 use the medal characters and the first row
+  uses the current accent. `timeAgo` is pure and tested at 59s, 60s, 3599s, 3600s, and 86400s. `Score`
+  has a public constructor so the widget test can inject rows. Home's Scores button opens the screen.
+  Checked on the Pixel 10 emulator at normal and 2× text: three games showed as 35, 35, 0 with gold,
+  silver, and bronze, newest tie first.
 
 Links: [[Memory Game]], [[Design Source]]

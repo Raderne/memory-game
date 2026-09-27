@@ -1,7 +1,7 @@
 # Screens
 
-Five screens under `lib/screens/`, plus the splash. Home, Game, Game Over, and Settings are built;
-Leaderboard remains planned. Per-screen specs live in `plan/0N-*.md` ([[Build Plan]]).
+Five screens under `lib/screens/`, plus the splash. Home, Game, Game Over, Settings, and Leaderboard
+are built. Per-screen specs live in `plan/0N-*.md` ([[Build Plan]]).
 
 ```
 Splash ──(5s, fade, replaces as root)──▶ Home
@@ -20,8 +20,8 @@ Home ──Start──▶ Game ──(gameover, 1.2s, replace)──▶ Game Ove
     SQLite. The score loads on entry and after any destination callback returns; zero is hidden.
   - Circle width is 70% of the screen capped at 220. The page uses `SafeArea`, 32px horizontal padding,
     48dp secondary touch targets, semantic button labels, and `Flexible` labels at large text scales.
-  - Navigation is exposed as `onStartGame`, `onOpenSettings`, and `onOpenScores` callbacks. Scores stays
-    a no-op until Leaderboard. Settings pushes the Settings screen.
+  - Navigation is exposed as `onStartGame`, `onOpenSettings`, and `onOpenScores` callbacks. Scores pushes
+    the Leaderboard. Settings pushes the Settings screen.
   - `homeRouteObserver` reloads the best score in `didPopNext`, so returning from Play Again still
     updates "Best".
 - **Game** (`screens/game.dart`, built in step 2): 48px Round/score header, interactive [[Simon Circle]],
@@ -49,7 +49,13 @@ Home ──Start──▶ Game ──(gameover, 1.2s, replace)──▶ Game Ove
   bottom: an outlined danger button, then inline Cancel / Confirm. Confirm calls `clearScores()` and
   stays on this screen. Home reloads Best when it is revealed, so the Best line disappears after a reset.
   Controls are at least 48dp, labelled for the screen reader, and the page was checked at 2× text.
-- **Leaderboard**: top 10 with 🥇🥈🥉, round, time-ago, and an empty state.
+- **Leaderboard** (`screens/leaderboard.dart`, built in step 5): TopBar "Leaderboard", then the top 10
+  scores from [[Database]] `topScores(10)`. The body waits for that future, so the empty state does not
+  flash. Empty: a 64px trophy circle, "No scores yet", and "Play a game to set your first record!".
+  Otherwise a separated list. Rank 1 uses the current accent at 6% fill and 19% border; other rows use
+  the card. Ranks 1–3 are 🥇 🥈 🥉, later ranks are the number. Each row shows the score, "Round N", and
+  `timeAgo` ("just now", "{m}m ago", "{h}h ago", "{d}d ago"). Rows are labelled for the screen reader.
+  The title, rank glyph, and time shrink instead of overflowing at large text.
 
 Settings are held in the root widget state and passed down (no state library, see [[Tech Stack]]).
 Screens compose the [[Shared Widgets]] (`Btn`, `TopBar`, `OptionRow`, `ChoiceChipX`) and the [[Simon Circle]].
