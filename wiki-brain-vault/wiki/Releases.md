@@ -37,4 +37,8 @@ git push origin v1.0.0
 
 A dry run is **Actions → Release → Run workflow**, with the version and no `v` prefix.
 
+## In-app update
+
+About compares the installed version with the latest GitHub release and can download that APK. See [[Updates]].
+
 Links: [[Build Plan]], [[Memory Game]]

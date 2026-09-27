@@ -5,6 +5,8 @@
 - No state-management library: `setState` + one `ChangeNotifier` ([[Game Engine]]).
 - Navigation: `Navigator.push` / `pushReplacement`.
 - Material icons only.
+- Network is used only by [[Updates]]: the About screen checks and downloads a GitHub release APK.
+  There is still no analytics and no Play Store.
 - Project: package `memory_app`, Android id `com.memory.memory_app`, label "Memory". Created with
   `flutter create --org com.memory --platforms android --project-name memory_app .` (the repo folder
   `Memory` is not a valid Dart package name, hence `--project-name`). Portrait is locked in
@@ -23,4 +25,4 @@ Any new dependency needs the user's approval ([[CLAUDE.md Rules]]).
 
 Release tags publish the Android APK. Branch pushes only validate. See [[Releases]].
 
-Links: [[Memory Game]], [[Database]]
+Links: [[Memory Game]], [[Database]], [[Updates]]

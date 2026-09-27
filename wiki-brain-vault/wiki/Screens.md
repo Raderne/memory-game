@@ -1,27 +1,29 @@
 # Screens
 
-Five screens under `lib/screens/`, plus the splash. Home, Game, Game Over, Settings, and Leaderboard
-are built. Per-screen specs live in `plan/0N-*.md` ([[Build Plan]]).
+Five screens under `lib/screens/`, plus the splash and About. Home, Game, Game Over, Settings, and
+Leaderboard are built. About checks GitHub for an update ([[Updates]]). Per-screen specs live in
+`plan/0N-*.md` ([[Build Plan]]).
 
 ```
 Splash ──(5s, fade, replaces as root)──▶ Home
 Home ──Start──▶ Game ──(gameover, 1.2s, replace)──▶ Game Over ──Play Again (replace)──▶ Game
  │  ◀──Back (no save)──┘                                 └──Home──▶ Home
  ├──Settings──▶ Settings ──Back──▶ Home
- └──Scores────▶ Leaderboard ──Back──▶ Home
+ ├──Scores────▶ Leaderboard ──Back──▶ Home
+ └──About─────▶ About ──Back──▶ Home
 ```
 
 - **Splash** (`screens/splash.dart`): the animated launch screen, see [[Launch Screen and Icon]].
 - **Home** (`screens/home.dart`, built in step 1): a centered, idle-animated [[Simon Circle]], gradient
-  "MEMORY" title, "Best: N" from [[Database]], and Start / Settings / Scores. It is now the start route.
+  "MEMORY" title, "Best: N" from [[Database]], and Start / Settings / Scores / About. It is now the start route.
   - The board lights tile `i % tileCount` every 1200 ms for 500 ms. Both timers are cancelled in
     `dispose`; `MediaQuery.disableAnimations` keeps it still when reduced motion is enabled.
   - `loadBest` defaults to `bestScore` and is injectable only to keep the widget test independent from
     SQLite. The score loads on entry and after any destination callback returns; zero is hidden.
   - Circle width is 70% of the screen capped at 220. The page uses `SafeArea`, 32px horizontal padding,
     48dp secondary touch targets, semantic button labels, and `Flexible` labels at large text scales.
-  - Navigation is exposed as `onStartGame`, `onOpenSettings`, and `onOpenScores` callbacks. Scores pushes
-    the Leaderboard. Settings pushes the Settings screen.
+  - Navigation is exposed as `onStartGame`, `onOpenSettings`, `onOpenScores`, and `onOpenAbout`.
+    Scores pushes the Leaderboard. Settings pushes the Settings screen. About pushes the About screen.
   - `homeRouteObserver` reloads the best score in `didPopNext`, so returning from Play Again still
     updates "Best".
 - **Game** (`screens/game.dart`, built in step 2): 48px Round/score header, interactive [[Simon Circle]],
@@ -58,6 +60,11 @@ Home ──Start──▶ Game ──(gameover, 1.2s, replace)──▶ Game Ove
   the card. Ranks 1–3 are 🥇 🥈 🥉, later ranks are the number. Each row shows the score, "Round N", and
   `timeAgo` ("just now", "{m}m ago", "{h}h ago", "{d}d ago"). Rows are labelled for the screen reader.
   The title, rank glyph, and time shrink instead of overflowing at large text.
+- **About** (`screens/about.dart`): TopBar "About", the installed version, and one update button.
+  Check reads the latest GitHub release ([[Updates]]). A newer release offers Download and install,
+  then the system installer. The status area and a 4px progress track stay reserved so the button
+  does not move. Errors use the danger color and stay next to the button. The page uses `SafeArea`,
+  a 48dp button, and a live region for the status.
 
 Settings are held in the root widget state and passed down (no state library, see [[Tech Stack]]).
 Screens compose the [[Shared Widgets]] (`Btn`, `TopBar`, `OptionRow`, `ChoiceChipX`) and the [[Simon Circle]].

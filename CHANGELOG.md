@@ -7,6 +7,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [1.0.3] - 2026-09-27
+
+### Added
+
+- An About screen that checks GitHub releases and can download and install an update.
+
 ## [1.0.2] - 2026-09-27
 
 ### Fixed

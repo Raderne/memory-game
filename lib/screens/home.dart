@@ -15,6 +15,7 @@ class HomeScreen extends StatefulWidget {
   final Future<void> Function() onStartGame;
   final Future<void> Function() onOpenSettings;
   final Future<void> Function() onOpenScores;
+  final Future<void> Function() onOpenAbout;
   final Future<int> Function() loadBest;
 
   const HomeScreen({
@@ -24,6 +25,7 @@ class HomeScreen extends StatefulWidget {
     required this.onStartGame,
     required this.onOpenSettings,
     required this.onOpenScores,
+    required this.onOpenAbout,
     this.loadBest = bestScore,
   });
 
@@ -209,6 +211,12 @@ class _HomeScreenState extends State<HomeScreen> with RouteAware {
                       ),
                     ),
                   ],
+                ),
+                const SizedBox(height: 12),
+                _SecondaryButton(
+                  label: 'About',
+                  icon: Icons.info_outline,
+                  onTap: () => _open(widget.onOpenAbout),
                 ),
               ],
             ),

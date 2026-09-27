@@ -23,6 +23,7 @@ void main() {
             onStartGame: onStartGame ?? () async {},
             onOpenSettings: () async {},
             onOpenScores: () async {},
+            onOpenAbout: () async {},
             loadBest: loadBest ?? () async => 0,
           ),
         ),
@@ -48,10 +49,11 @@ void main() {
     expect(find.text('Start Game'), findsOneWidget);
     expect(find.text('Settings'), findsOneWidget);
     expect(find.text('Scores'), findsOneWidget);
+    expect(find.text('About'), findsOneWidget);
     expect(find.textContaining('Best:'), findsNothing);
     expect(tester.widget<SimonCircle>(find.byType(SimonCircle)).tileCount, 4);
 
-    for (final label in ['Settings', 'Scores']) {
+    for (final label in ['Settings', 'Scores', 'About']) {
       final button = find.ancestor(
         of: find.text(label),
         matching: find.byType(InkWell),
@@ -130,6 +132,7 @@ void main() {
           onStartGame: () async {},
           onOpenSettings: () async {},
           onOpenScores: () async {},
+          onOpenAbout: () async {},
           loadBest: () async => best,
         ),
       ),

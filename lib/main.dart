@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import 'db.dart';
+import 'screens/about.dart';
 import 'screens/game.dart';
 import 'screens/home.dart';
 import 'screens/leaderboard.dart';
@@ -70,6 +71,13 @@ class _MemoryAppState extends State<MemoryApp> {
           await Navigator.of(context).push<void>(
             MaterialPageRoute(
               builder: (_) => LeaderboardScreen(accent: settings.accent),
+            ),
+          );
+        },
+        onOpenAbout: () async {
+          await Navigator.of(context).push<void>(
+            MaterialPageRoute(
+              builder: (_) => AboutScreen(accent: settings.accent),
             ),
           );
         },
