@@ -13,6 +13,7 @@ wiki-brain-vault/graphify-out/
 .svn/
 .swiftpm/
 migrate_working_dir/
+Notes.md
 
 # IntelliJ related
 *.iml
