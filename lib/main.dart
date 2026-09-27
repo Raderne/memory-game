@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import 'db.dart';
+import 'screens/game.dart';
 import 'screens/home.dart';
 import 'theme.dart';
 
@@ -29,13 +30,30 @@ class _MemoryAppState extends State<MemoryApp> {
       title: 'Memory',
       debugShowCheckedModeBanner: false,
       theme: appTheme,
-      home: HomeScreen(
-        settings: settings,
-        onSettingsChanged: _onSettingsChanged,
-        // Each callback is wired to its screen in that screen's build step.
-        onStartGame: () async {},
-        onOpenSettings: () async {},
-        onOpenScores: () async {},
+      home: Builder(
+        builder: (context) => HomeScreen(
+          settings: settings,
+          onSettingsChanged: _onSettingsChanged,
+          onStartGame: () async {
+            await Navigator.of(context).push<void>(
+              MaterialPageRoute(
+                builder: (_) => GameScreen(
+                  settings: settings,
+                  // Step 3 replaces this with the Game Over route.
+                  onGameOver:
+                      ({
+                        required score,
+                        required round,
+                        required previousBest,
+                      }) async {},
+                ),
+              ),
+            );
+          },
+          // Each callback is wired to its screen in that screen's build step.
+          onOpenSettings: () async {},
+          onOpenScores: () async {},
+        ),
       ),
     );
   }

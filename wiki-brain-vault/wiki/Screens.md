@@ -20,7 +20,17 @@ Home ──Start──▶ Game ──(gameover, 1.2s, replace)──▶ Game Ove
     48dp secondary touch targets, semantic button labels, and `Flexible` labels at large text scales.
   - Navigation is exposed as `onStartGame`, `onOpenSettings`, and `onOpenScores` callbacks. `main.dart`
     intentionally passes no-ops until each target screen's build step; no future-screen stubs were added.
-- **Game**: Round N, a score pill, the interactive circle and progress dots. Driven by [[Game Engine]].
+- **Game** (`screens/game.dart`, built in step 2): 48px Round/score header, interactive [[Simon Circle]],
+  animated phase message, and progress dots. Driven by [[Game Engine]].
+  - The circle is 85% of screen width capped at 280 (and constrained to the available width). Input is
+    disabled outside the engine's input phase. The center shows the round or a danger-colored `✕`.
+  - Completed 8px progress dots use the current accent and 38%-alpha glow; dots wrap only if a very long
+    sequence cannot fit one row.
+  - On game over, previous best is read before the score is inserted, exactly once. After 1200 ms the
+    screen calls `onGameOver(score, round, previousBest)`. This callback remains a no-op until step 3,
+    so the Game Over state remains visible and Back returns Home.
+  - Back before game over disposes the engine and saves nothing. Message color animation becomes
+    instantaneous when reduced motion is enabled. The layout was checked at normal and 2× text scale.
 - **Game Over**: score, a ★ NEW HIGH SCORE badge, Round/Best stats, Play Again / Home.
 - **Settings**: Tiles 4/6/8, Speed, Color Theme ([[Theme and Colors]]) and a preview circle. Changes save
   immediately. Reset All Scores uses an inline confirm, not a dialog.

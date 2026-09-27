@@ -7,7 +7,7 @@ and must meet the definition of done in [[CLAUDE.md Rules]].
 |---|---|---|---|
 | 0 | `plan/00-foundation.md` | project, [[Theme and Colors]], [[Database]], [[Shared Widgets]], [[Simon Circle]] | **done** 2026-09-27 |
 | 1 | `plan/01-home.md` | Home ([[Screens]]) | **done** 2026-09-27 |
-| 2 | `plan/02-gameplay.md` | [[Game Engine]] + Game screen | todo |
+| 2 | `plan/02-gameplay.md` | [[Game Engine]] + Game screen | **done** 2026-09-27 |
 | 3 | `plan/03-game-over.md` | Game Over | todo |
 | 4 | `plan/04-settings.md` | Settings | todo |
 | 5 | `plan/05-leaderboard.md` | Leaderboard | todo |
@@ -25,5 +25,9 @@ by step 3.
 - **1 (done):** `screens/home.dart` is the start route. Widget tests cover the fresh state, best-score reload,
   complete 4/6/8-tile idle cycles, reduced motion, and 48dp secondary targets. Checked on the Pixel 10 emulator
   at normal and 2× text scale. Future-screen callbacks remain no-ops until their own build steps.
+- **2 (done):** `game.dart` implements the timed state machine and scoring; `screens/game.dart` is wired from
+  Home and saves once at game over. Engine and screen tests cover scoring, input lockout, read-before-insert,
+  and the 1200 ms result callback. Checked on the Pixel 10 emulator at normal and 2× text scale. The result
+  callback remains a no-op until step 3 builds Game Over.
 
 Links: [[Memory Game]], [[Design Source]]
