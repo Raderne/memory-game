@@ -15,7 +15,7 @@ These three values must match before a release:
 ## Workflows
 
 - `.github/workflows/ci.yml` runs on `main`, `develop`, and `release/**`, and on pull requests. It analyzes, tests, and builds a debug APK. It does not publish. Markdown-only pushes are ignored.
-- `.github/workflows/release.yml` runs on tags `v*.*.*`. It checks that the tag is SemVer, that the commit is on `main`, and that `pubspec.yaml` matches the tag. It then tests, signs a release APK, and publishes a GitHub Release. A manual run builds the same artifact and does not publish.
+- `.github/workflows/release.yml` runs on tags `v*.*.*`. It checks that the tag is SemVer, that the commit is on `develop` (the default branch), and that `pubspec.yaml` matches the tag. It then tests, signs a release APK, and publishes a GitHub Release. A manual run builds the same artifact and does not publish.
 
 ## Signing
 

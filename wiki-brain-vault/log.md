@@ -37,3 +37,6 @@ Touched: index, Tech Stack, Releases
 
 ## [2026-09-27 15:00] session | Launch screen and launcher icon
 Touched: Launch Screen and Icon, Screens, Design Source, Build Plan, Simon Circle, index
+
+## [2026-09-27 16:25] session | Release tags must be on develop
+Touched: Releases
